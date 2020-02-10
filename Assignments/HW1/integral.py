@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 """
 This the module for home work 1.
 
-This provides one function, intg() which is used to evaluate the value of an integral between a the given limits
+This module provides one function, intg() which is used to evaluate the value of an integral between a the given limits
 
 >>
 """
 import math
 from math import pi, sin
+
 '''
 Three lambda functions are defined below to evaluate three integrands
 '''
@@ -24,10 +25,9 @@ expr = lambda x: (x ** 3) / (math.exp(x) - 1)
 
 
 def main():
-    # lst = intg(expw, 1, 3, 1e-7, True)
     print('\nrunning...\n')
-    lst = intg(sinx, 0, math.pi, 1e-7, True)
-    #lst = intg(expr, 0, 100)
+    # lst = intg(sinx, 0, math.pi, 1e-7, True)
+    lst = intg(expr, 0, 100)
     fract_err = abs((lst[0] - math.pi ** 4) / 15)
     print('The integral evaluated to within specified accuracy: {:1.8f}'.format(lst[0]))
     print('The upper limit of its fractional error is estimated to be: {:1.8f}'.format(lst[1]))
@@ -58,7 +58,9 @@ def intg(f, xlo, xhi, tol=1e-7, print_progress=True):
     while fract_diff > 1e-7:
 
         N = int((xhi - xlo) / dx)
-
+        '''
+        Find the sum of the area of the rectangle under the curves
+        '''
         for i in range(0, N + 1):
             if i == 0 and f == expr:
                 result = dx
@@ -67,6 +69,9 @@ def intg(f, xlo, xhi, tol=1e-7, print_progress=True):
             newsum = newsum + result
 
         if print_progress:
+            '''
+            If print_progress is true , the print it out
+            '''
             print('number of steps:{:5.0f}'.format(N))
             print('dy = {:1.5f} , integral = {:1.8f}'.format(dx, newsum))
             if dx == 1:
@@ -85,17 +90,8 @@ def intg(f, xlo, xhi, tol=1e-7, print_progress=True):
 
 
 if __name__ == '__main__':
+    import doctest
+
+    doctest.testmod()
     main()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
