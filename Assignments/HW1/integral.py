@@ -9,7 +9,13 @@ This the module for home work 1.
 
 This module provides one function, intg() which is used to evaluate the value of an integral between a the given limits
 
->>
+There are two doctests below to test the integral of sin x and e^-x
+
+>>> intg(sinx, 0, math.pi, 1e-7, False)[0]
+1.99999985
+
+>>> intg(expw, 1, 3, 1e-7, False)[0]
+0.3180924
 """
 import math
 from math import pi, sin
