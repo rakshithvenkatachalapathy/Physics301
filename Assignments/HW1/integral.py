@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 """
 This the module for home work 1.
 
@@ -12,10 +6,10 @@ This module provides one function, intg() which is used to evaluate the value of
 There are two doctests below to test the integral of sin x and e^-x
 
 >>> intg(sinx, 0, math.pi, 1e-7, False)[0]
-1.99999985
+1.9999999842068952
 
 >>> intg(expw, 1, 3, 1e-7, False)[0]
-0.3180924
+0.3180923917632692
 """
 import math
 from math import pi, sin
@@ -32,9 +26,8 @@ expr = lambda x: (x ** 3) / (math.exp(x) - 1)
 
 def main():
     print('\nrunning...\n')
-    # lst = intg(sinx, 0, math.pi, 1e-7, True)
     lst = intg(expr, 0, 100)
-    fract_err = abs((lst[0] - math.pi ** 4) / 15)
+    fract_err = abs(lst[0] - (math.pi ** 4 / 15))
     print('The integral evaluated to within specified accuracy: {:1.8f}'.format(lst[0]))
     print('The upper limit of its fractional error is estimated to be: {:1.8f}'.format(lst[1]))
     print('The correct answer is: {:1.8f}'.format(math.pi ** 4 / 15))
@@ -61,15 +54,15 @@ def intg(f, xlo, xhi, tol=1e-7, print_progress=True):
     fract_diff = 1
     dx = 1
 
-    while fract_diff > 1e-7:
+    while fract_diff > tol:
 
         N = int((xhi - xlo) / dx)
         '''
         Find the sum of the area of the rectangle under the curves
         '''
-        for i in range(0, N + 1):
+        for i in range(0, N):
             if i == 0 and f == expr:
-                result = dx
+                result = 0
             else:
                 result = f(xlo + (i * dx)) * dx
             newsum = newsum + result
@@ -87,10 +80,10 @@ def intg(f, xlo, xhi, tol=1e-7, print_progress=True):
 
         fract_diff = abs((newsum - oldsum) / newsum)
         oldsum = newsum
-        if fract_diff > 1e-7:
+        if fract_diff > tol:
             newsum = 0
         dx = dx / 2
-        newsum = round(newsum, 8)
+
 
     return newsum, fract_diff
 
@@ -100,4 +93,3 @@ if __name__ == '__main__':
 
     doctest.testmod()
     main()
-
