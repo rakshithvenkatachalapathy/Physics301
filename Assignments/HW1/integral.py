@@ -14,6 +14,9 @@ There are two doctests below to test the integral of sin x and e^-x
 >>> (intg(sinx, 0, math.pi, 1e-7, False)[0] - ((-1* cos(math.pi)) - (-1*cos(0)))) < 1e-7
 True
 
+>>> (intg(expw, 1, 3, 1e-7, False)[0] - ((-1*math.exp(-3))-(-1*math.exp(-1)))) > 1e-7
+False
+
 >>> (intg(expw, 1, 3, 1e-7, False)[0] - ((-1*math.exp(-3))-(-1*math.exp(-1)))) < 1e-7
 True
 """
