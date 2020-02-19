@@ -55,19 +55,29 @@ def addToList(mylist, num):
 
 
 # function 2
-def printDetails():
+
+from prettytable import PrettyTable
+
+
+def printDetails(param):
+    t = PrettyTable(['Star', param])
     for i in range(len(listName)):
-        print(listName[i], '{:5}'.format(listDistance[i]))
+        t.add_row([listName[i], '{:5}'.format(listDistance[i])])
+        # print(listName[i], '{:5}'.format(listDistance[i]))
+    print(t)
+    print('\n')
 
 
 addToList(distanceSorter, 1)
 print("Ranked by Distance")
-printDetails()
+printDetails('Distance')
 delList()
-print("----")
+
 addToList(apparentBrightness, 2)
-printDetails()
+print("Ranked by Apparent Brightness")
+printDetails('Apparent Brightness')
 delList()
-print("----")
+
 addToList(absoulteBrightness, 3)
-printDetails()
+print("Ranked by Absolute Brightness")
+printDetails('Absolute Brightness')
