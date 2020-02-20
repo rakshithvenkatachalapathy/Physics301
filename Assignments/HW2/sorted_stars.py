@@ -60,11 +60,12 @@ from prettytable import PrettyTable
 
 
 def printDetails(param):
-    t = PrettyTable(['Star', param])
+    # print('Star {:5}'.format(param))
+    # t = PrettyTable(['Star', param])
     for i in range(len(listName)):
-        t.add_row([listName[i], '{:5}'.format(listDistance[i])])
-        # print(listName[i], '{:5}'.format(listDistance[i]))
-    print(t)
+        # t.add_row([listName[i], '{:5}'.format(listDistance[i])])
+        print(listName[i], '{:5}'.format(listDistance[i]))
+    # print(t)
     print('\n')
 
 

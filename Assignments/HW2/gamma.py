@@ -16,7 +16,7 @@ def fact(n):
     return sum
 
 
-def parse_agrs():
+def parseAgrs():
     parser = argparse.ArgumentParser()
     parser.add_argument('-x')
     # [-+]?[0-9]*\.+[0-9]*
@@ -33,7 +33,7 @@ def parse_agrs():
     return t
 
 
-def call_func(t):
+def callFunc(t):
     if isinstance(t, int) and t >= 1:
         result = fact(t - 1)
     elif isinstance(t, float) and t >= 1:
@@ -53,10 +53,10 @@ if __name__ == "__main__":
     import re
     import pdb
 
-    t = parse_agrs()
+    t = parseAgrs()
     # based on the type of x call two functions
 
-    result = call_func(t)
+    result = callFunc(t)
 
     if isinstance(result, int):
         print('The factorial of t-1 is {:1}'.format(result))
