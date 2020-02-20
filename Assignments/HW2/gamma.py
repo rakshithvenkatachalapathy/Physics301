@@ -14,6 +14,7 @@ if __name__ == "__main__":
     import doctest
     import argparse
     import math
+    import re
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-x')
@@ -21,6 +22,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     x = args.x
-    print(type(x))
+    m = re.match("[-+]?[0-9]*\.+[0-9]*", x)
+    if re.match("[-+]?[0-9]*\.+[0-9]*", x):
+        x = float(x)
 
+    else:
+        x = int(x)
+    print(type(x))
+    result = 0
     # based on the type of x call two functions
+    if isinstance(x, int):
+        result = fact(x - 1)
+    else:
+        print("hi")
+
+    print(result)
