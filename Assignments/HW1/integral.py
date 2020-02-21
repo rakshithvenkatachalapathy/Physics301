@@ -102,3 +102,15 @@ if __name__ == '__main__':
 
     doctest.testmod()
     main()
+
+
+"""
+    Comments from TA:
+    1. In doctest, instead of assert the output from you code, assert something like: 
+        # >>> output - real_answer < 1e-7
+        # true
+        # eg:
+        # >>> 2 - intg(lambda x: math.sin(x), 0, math.pi, print_progress=False)[0] < 1e-7
+        # true
+       would be better
+"""
