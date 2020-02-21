@@ -16,14 +16,17 @@ def fact(n):
     return sum
 
 
-def parseAgrs():
+def gamma(f, tol, xlo, xhi):
+    res = intg(f, xlo, xhi, tol, False)
+    return res
+
+
+def parse_agrs():
     parser = argparse.ArgumentParser()
     parser.add_argument('-x')
-    # [-+]?[0-9]*\.+[0-9]*
     args = parser.parse_args()
 
     t = args.x
-    m = re.match("[-+]?[0-9]*\.+[0-9]*", t)
     if re.match("[-+]?[0-9]*\.+[0-9]*", t):
         t = float(t)
 
@@ -33,17 +36,26 @@ def parseAgrs():
     return t
 
 
-def callFunc(t):
+def call_func(t):
     if isinstance(t, int) and t >= 1:
         result = fact(t - 1)
     elif isinstance(t, float) and t >= 1:
         expr = lambda x: (x ** (t - 1)) * math.exp(-1 * x)
-        result = intg(expr, 0, 1000, 1e-4, False)
+        # result = intg(expr, 0, 1000, 1e-4, False)
+        result = gamma(expr, 1e-4, 0, 1000)
     else:
         print("The value of 't' is less than 1")
         result = 0
 
     return result
+
+
+def print_details(final_result):
+    if isinstance(final_result, int):
+        print('The factorial of t-1 is {:1}'.format(final_result))
+    else:
+        print('The result of the integral is {:1.8f}'.format(final_result[0]))
+        print('The fract_diff is {:1.8f}'.format(final_result[1]))
 
 
 if __name__ == "__main__":
@@ -53,13 +65,16 @@ if __name__ == "__main__":
     import re
     import pdb
 
-    t = parseAgrs()
+    t = parse_agrs()
     # based on the type of x call two functions
 
-    result = callFunc(t)
+    temp_result = call_func(t)
 
-    if isinstance(result, int):
-        print('The factorial of t-1 is {:1}'.format(result))
-    else:
-        print('The result of the integral is {:1.8f}'.format(result[0]))
-        print('The fract_diff is {:1.8f}'.format(result[1]))
+    print_details(temp_result)
+
+    # if isinstance(final_result, int):
+    #     print('The factorial of t-1 is {:1}'.format(final_result))
+    # else:
+    #     print('The result of the integral is {:1.8f}'.format(final_result[0]))
+    #     print('The fract_diff is {:1.8f}'.format(final_result[1]))
+
