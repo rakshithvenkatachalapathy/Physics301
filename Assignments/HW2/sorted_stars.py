@@ -24,76 +24,80 @@ data = [('Alpha Centauri A', 4.3, 0.26, 1.56),
 Below are the three functions to return the first,second and the third key from the data list
 '''
 
-def getFirst(list):
+
+def get_first(list):
     return list[1]
 
 
-def getSecond(list):
+def get_second(list):
     return list[2]
 
 
-def getThird(list):
+def get_third(list):
     return list[3]
 
 
-distanceSorter = sorted(data, key=getFirst)
-apparentBrightness = sorted(data, key=getSecond)
-absoulteBrightness = sorted(data, key=getThird)
+distanceSorter = sorted(data, key=get_first)
+apparentBrightness = sorted(data, key=get_second)
+absoulteBrightness = sorted(data, key=get_third)
 
 listName = []
-listDistance = []
+listParameters = []
 
-'''
-Function to delete the list 
-'''
 
-def delList():
+def del_list():
+    """
+    Function to delete the list
+    :return: NA
+    """
     del listName[:]
-    del listDistance[:]
+    del listParameters[:]
 
-"""
-Function to perform the list comprehension and add the elements to the appropriate list
 
-Takes in the List and the index at which the list item needs to be appended 
-"""
+def add_to_list(mylist, num):
+    """
+    Function to perform the list comprehension and add the elements to the appropriate list
 
-def addToList(mylist, num):
+    Takes in the List and the index at which the list item needs to be appended
+    :param mylist: The list that needs to be iterated
+    :param num: The index used ti extract values
+    :return: NA
+    """
     index = 0
     for tup in mylist:
 
-        if (index <= 1):
+        if index <= 1:
             listName.append(tup[0])
-            listDistance.append(tup[num])
+            listParameters.append(tup[num])
             index += 1
         index = 0
 
 
+def print_details():
+    """
+    Function to print the details of the star names and the corresponding parameter
 
-'''
-Function to print the details of the star names and the corresponding parameter
-'''
-
-def printDetails(param):
-    # print('Star {:5}'.format(param))
-    # t = PrettyTable(['Star', param])
+    :param param:
+    :return: NA
+    """
     for i in range(len(listName)):
-        # t.add_row([listName[i], '{:5}'.format(listDistance[i])])
-        print(listName[i], '{:5}'.format(listDistance[i]))
-    # print(t)
+        print(listName[i], '{:5}'.format(listParameters[i]))
+
     print('\n')
 
 
-addToList(distanceSorter, 1)
-print("Ranked by Distance")
-printDetails('Distance')
-delList()
+if __name__ == "__main__":
+    add_to_list(distanceSorter, 1)
+    print("Ranked by Distance")
+    print_details()
+    del_list()
 
-addToList(apparentBrightness, 2)
-print("Ranked by Apparent Brightness")
-printDetails('Apparent Brightness')
-delList()
+    add_to_list(apparentBrightness, 2)
+    print("Ranked by Apparent Brightness")
+    print_details()
+    del_list()
 
-addToList(absoulteBrightness, 3)
-print("Ranked by Absolute Brightness")
-printDetails('Absolute Brightness')
+    add_to_list(absoulteBrightness, 3)
+    print("Ranked by Absolute Brightness")
+    print_details()
 
