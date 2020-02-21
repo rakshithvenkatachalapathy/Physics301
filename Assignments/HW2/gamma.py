@@ -1,8 +1,6 @@
 """
 This the module for home work 2.
-
 This module is used to compute the value of the Gamma function based on the value of the user input
-
 >>> fact(5)
 120
 
@@ -22,6 +20,7 @@ This module is used to compute the value of the Gamma function based on the valu
 
 >>> call_func([6.0000001,1e-4])[0]-fact(5) < 1e-4
 True
+
 """
 import sys
 import sys
@@ -62,7 +61,6 @@ def gamma(f, tol, xlo, xhi):
     """
     This function is used to calculate the gamma function that is the integral of the given function
     Makes use of the intg function from HW1 to to evaluate the integral of the expression
-
     :param f: The function for which the integral needs to be evaluated
     :param tol: Tolerance level given to be 1e-4
     :param xlo: The lower integration limit
@@ -139,4 +137,3 @@ if __name__ == "__main__":
     temp_result = call_func(t)
 
     print_details(temp_result)
-
