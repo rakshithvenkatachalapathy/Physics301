@@ -1,8 +1,35 @@
 """
 This the module for home work 2.
+
 This module is used to compute the value of the Gamma function based on the value of the user input
+
+>>> fact(5)
+120
+
+>>> fact(10)
+3628800
+
+>> gamma(expr,1e-4,0,1000)[0]
+52.34274485
+
+#call_func internally calls gamma function
+
+>>> call_func([5.5,1e-4])[0]
+52.342744854260964
+
+>>> call_func([6.0001,1e-4])[0]
+120.02042110069128
+
+>>> call_func([6.0000001,1e-4])[0]-fact(5) < 1e-4
+True
 """
 import sys
+import sys
+import doctest
+import argparse
+import math
+import re
+import pdb
 
 '''
 Importing the intg function from HW1 by traversing one level up in the folder structure and accessing HW1 folder
@@ -105,11 +132,6 @@ def print_details(final_result):
 
 
 if __name__ == "__main__":
-    import doctest
-    import argparse
-    import math
-    import re
-    import pdb
 
     t = parse_agrs()
     # based on the type of x call two functions
@@ -117,10 +139,4 @@ if __name__ == "__main__":
     temp_result = call_func(t)
 
     print_details(temp_result)
-
-    # if isinstance(final_result, int):
-    #     print('The factorial of t-1 is {:1}'.format(final_result))
-    # else:
-    #     print('The result of the integral is {:1.8f}'.format(final_result[0]))
-    #     print('The fract_diff is {:1.8f}'.format(final_result[1]))
 
