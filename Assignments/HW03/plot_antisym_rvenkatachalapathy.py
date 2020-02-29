@@ -1,3 +1,7 @@
+"""
+This module is for HW03 for Plotting Antisymmetric Wave Functions
+Plots the wave function and the probability density for the given values of x,y
+"""
 import argparse
 import sys
 
@@ -16,11 +20,16 @@ txt = "\n\nThe \"effective\" interaction between two neutral Fermions (both spin
       "requirement on the total wave function. "
 
 
-def f2(x, y):
-    return np.sin(np.sqrt(np.power(x, 2) + np.power(y, 2)))
-
-
 def antisym(x1, x2, n1=1, n2=2, a=1.0):
+    """
+    This function is used to calculate the total wave function for the user inputs
+    :param x1: the x value
+    :param x2: the y value
+    :param n1: quantum number n1
+    :param n2: quantum number n2
+    :param a: square between (0, a)
+    :return: the value computed by the function
+    """
     pone = np.sin((n1 * np.pi * x1) / a) * np.sin((n2 * np.pi * x2) / a)
     ptwo = np.sin((n1 * np.pi * x2) / a) * np.sin((n2 * np.pi * x1) / a)
     val = (2 / a) * (pone - ptwo)
@@ -30,7 +39,7 @@ def antisym(x1, x2, n1=1, n2=2, a=1.0):
 def parse_agrs():
     """
     This function is used to parse the user input using by using the argparse
-    :return:
+    :return: A tuple with the x1,x2,n1,n2,a based on the user input
     """
     ret = ()
     parser = argparse.ArgumentParser()
@@ -42,6 +51,7 @@ def parse_agrs():
     args = parser.parse_args()
     # Read the command line input using argparse
 
+    # parse bases  on the number of command line arguments
     if len(sys.argv) == 5:
         x1 = int(args.x1_steps)
         x2 = int(args.x2_steps)
@@ -56,34 +66,37 @@ def parse_agrs():
         n2 = int(args.n2)
         a = float(args.a)
         ret = (x1, x2, n1, n2, a)
+    else:
+        print("Please provide the conditional and optional parameters (x1, x2, n1, n2, a)")
     return ret
 
 
 if __name__ == "__main__":
     arg = parse_agrs()
     Z = 0
-
-    fig = plt.figure(figsize=(9, 4))
-
+    # plot the figure
+    fig = plt.figure(figsize=(15, 4))
+    # Set the subplot
     ax1 = fig.add_subplot(121, projection='3d')
-    ax1.set_title('$Antisymmetric  Spatial  Wave  Function $')
-
-    # x = y = np.linspace(-5, 5, 50)
+    # Set the title
+    fig.suptitle('Antisymmetric  Spatial  Wave  Functione', fontsize=12)
+    ax1.set_title('$Wave  Function $')
+    # Set  the linspace
     x = np.linspace(0, arg[4], arg[0])
-
     y = np.linspace(0, arg[4], arg[1])
+    # Set the meshgrid
     X, Y = np.meshgrid(x, y)
     Z = antisym(X, Y)
     Z2 = antisym(X, Y) ** 2
-
+    # Plot the surface
     ax1.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0)
-
+    # Set the subplot to the right of the first figure
     ax2 = fig.add_subplot(122, projection='3d')
     ax2.set_title('$  Probability Density$')
-
+    # Plot the surface
     ax2.plot_surface(X, Y, Z2, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0)
     fig.text(.5, .001, txt, ha='center')
-
+    # Show the figure
     plt.ion()
     plt.show()
 
