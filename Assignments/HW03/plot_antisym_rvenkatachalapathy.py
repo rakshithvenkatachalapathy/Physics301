@@ -71,9 +71,7 @@ def parse_agrs():
     return ret
 
 
-if __name__ == "__main__":
-    arg = parse_agrs()
-    Z = 0
+def plot_figure():
     # plot the figure
     fig = plt.figure(figsize=(15, 4))
     # Set the subplot
@@ -99,4 +97,9 @@ if __name__ == "__main__":
     # Show the figure
     plt.ion()
     plt.show()
+
+
+if __name__ == "__main__":
+    arg = parse_agrs()
+    plot_figure()
 
