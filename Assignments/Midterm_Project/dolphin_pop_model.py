@@ -36,3 +36,27 @@ def readNames(gender, fileName):
 readNames("boy", "boys.dat")
 readNames("girl", "girls.dat")
 
+
+def yieldName(gender):
+    print('generator started')
+    filename = 'boys.dat'
+    if gender.casefold() == "female" or gender.casefold() == "f":
+        filename = 'girls.dat'
+    f = open(filename, 'r')
+    # Looping through the file line by line
+    for line in f:
+        # if keyword in line:
+        #     # If keyword found, return it
+        line = f.readline()
+        yield line
+    f.close()
+
+
+if __name__ == "__main__":
+    mname = yieldName('male')
+    print(next(mname))
+    fname = (yieldName("female"))
+    print(next(fname))
+    print(next(mname))
+    print(next(fname))
+
