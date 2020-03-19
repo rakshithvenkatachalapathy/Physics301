@@ -137,3 +137,9 @@ if __name__ == "__main__":
     temp_result = call_func(t)
 
     print_details(temp_result)
+
+'''
+when you do parser.add_argument()
+you can set -tol to have a default value, so that user can ignore it, like:
+parser.add_argument('-tol', type = float, default = 1e-4)
+'''

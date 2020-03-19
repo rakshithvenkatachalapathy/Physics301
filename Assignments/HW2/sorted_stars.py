@@ -101,3 +101,7 @@ if __name__ == "__main__":
     print("Ranked by Absolute Brightness")
     print_details()
 
+
+'''
+perfect
+'''
