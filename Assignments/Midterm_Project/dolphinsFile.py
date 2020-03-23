@@ -39,7 +39,7 @@ def readNames(gender, fileName):
                     if name.strip().startswith("ALSO READ"):
                         break
                     else:
-                        print(str(val) + " " + name.strip())
+                        # print(str(val) + " " + name.strip())
                         # Write the names on to the file
                         f.write(name.strip())
                         f.write("\n")
@@ -105,7 +105,21 @@ def yieldName(gender):
 
 
 class Dolphins:
+    """
+    Dolphin class with the required attributes and the two methods
+    """
+
     def __init__(self, name, sex, mother, father):
+        """
+        init method to set the attributes
+        :param name: dolphin name
+        :param sex: male/female
+        :param mother: mother's name
+        :param father: father's name
+
+        there are three more attributes : age , death and years_since_procreation which are initialized to 0 when the
+        object is created
+        """
         self.name = name
         self.sex = sex
         self.age = 0
@@ -115,9 +129,22 @@ class Dolphins:
         self.death = int(round(random.gauss(35, 5)))  # Mean = 35 and sigma = 5
 
     def __set__(self, instance, value):
+        """
+        Planning to use this method to increment the value of the age.
+        Maybe modified later for part 2
+        :param instance:
+        :param value:
+        :return:
+        """
         self.age = value
 
     def request_procreation(self, req):
+        """
+        This method checks if the given dolphin can procreate with another dolphin based on the different conditions
+        Maybe modified later for part 2
+        :param req: is an object of dolphin type against which the dolphin will be compared
+        :return: a boolean flag that determines if the dolphin can procreate with the 'req' dolphin
+        """
         flag = True
         if str(self.sex).casefold() == str(req.sex).casefold():
             flag = False
@@ -135,12 +162,33 @@ class Dolphins:
         return flag
 
     def age_record(self):
-        print('The age of the dolphin is {}'.format(self.age))
-        print('Procreation since {} years'.format(self.years_since_procreation))
+        """
+        Keeps track of the age , years_since_procreation and the death
+         Maybe modified later for part 2
+        :return: a tuple of  age , years_since_procreation and the death
+        """
 
-        self.age = self.age + 1
-
+        flag = False
+        pflag = False
+        # To check if the dolphin procreates in 5 years
+        # IF this number is 5 then the dolphin procreates
         if self.years_since_procreation == 5:
-            self.years_since_procreation = 0
-        elif self.years_since_procreation != 5:
-            self.years_since_procreation = self.years_since_procreation + 1
+            pflag = True
+        # To determine the dolphin's death
+        if self.age > self.years_since_procreation:
+            flag = True
+        return self.age, pflag, flag
+
+
+"""
+Commented code below which can be used for testing the methods readNames and yieldName
+"""
+# if __name__ == "__main__":
+#     readNames("boy", "boys.dat")
+#     readNames("girl", "girls.dat")
+#     mname = yieldName('male')
+#     print(next(mname))
+#     fname = (yieldName("female"))
+#     print(next(fname))
+#     print(next(mname))
+#     print(next(fname))
