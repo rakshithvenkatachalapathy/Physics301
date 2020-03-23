@@ -39,7 +39,6 @@ def readNames(gender, fileName):
                     if name.strip().startswith("ALSO READ"):
                         break
                     else:
-                        # print(str(val) + " " + name.strip())
                         # Write the names on to the file
                         f.write(name.strip())
                         f.write("\n")
@@ -178,17 +177,3 @@ class Dolphins:
         if self.age > self.years_since_procreation:
             flag = True
         return self.age, pflag, flag
-
-
-"""
-Commented code below which can be used for testing the methods readNames and yieldName
-"""
-# if __name__ == "__main__":
-#     readNames("boy", "boys.dat")
-#     readNames("girl", "girls.dat")
-#     mname = yieldName('male')
-#     print(next(mname))
-#     fname = (yieldName("female"))
-#     print(next(fname))
-#     print(next(mname))
-#     print(next(fname))
