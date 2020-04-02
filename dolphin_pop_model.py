@@ -1,3 +1,5 @@
+import networkx as nx
+
 from dolphinsFile import *
 import random
 import numpy as np
@@ -6,16 +8,34 @@ import matplotlib.pyplot as plt
 
 
 def update_all_procreation(year, dolphList):
+    """
+    Helper method Used to update all the years
+    :param year:
+    :param dolphList:
+    :return:
+    """
     for dol in dolphList:
         dol.update_procreation_time(year)  # add update_procreation_time
 
 
 def update_all_age(year, dolphList):
+    """
+    Helper method to update the all ages
+    :param year:
+    :param dolphList:
+    :return:
+    """
     for dol in dolphList:
         dol.update_age(year)  # update_age
 
 
 def alive_lst(year, dolphList):
+    """
+    Helper method to get the dolphins alive
+    :param year:
+    :param dolphList:
+    :return:
+    """
     aliveList = []
     alive(year, dolphList)
     for dol in dolphList:
@@ -25,6 +45,12 @@ def alive_lst(year, dolphList):
 
 
 def alive(year, dolphList):
+    """
+    Helper method to check if the dolphin is alive
+    :param year:
+    :param dolphList:
+    :return:
+    """
     update_all_age(year, dolphList)
     for dol in dolphList:
         if dol.age >= dol.death:
@@ -32,138 +58,114 @@ def alive(year, dolphList):
 
 
 def main():
-    # readNames("boy", "boys.dat")
-    # readNames("girl", "girls.dat")
+    """
+    Main method to perform part A ,B C
+    :return:
+    """
+    readNames("boy", "boys.dat")
+    readNames("girl", "girls.dat")
+    mean = np.empty([10, 150])
     mname = dl.yieldName('male')
     fname = dl.yieldName('female')
 
-    maleList = []
-    femaleList = []
-    maleBreedingList = []
-    femaleBreedingList = []
-    totalPopulation = []
-    totalBreeding = []
-    childrenList = []
-    done = []
-    mean = np.empty([10, 150])
-
-    for i in range(1, 11):
+    for j in range(1, 11):
         print("**************************************************")
-        print("Trial No.{}".format(str(i)))
-        maleList = []
-        femaleList = []
-        maleBreedingList = []
-        femaleBreedingList = []
-        totalPopulation = []
-        totalBreeding = []
-        childrenList = []
-        done = []
-
-        # generate 2 males and 2 females
-        dm1 = Dolphins(next(mname), 'male', 'abc', 'xys')
-        dm2 = Dolphins(next(mname), 'male', 'abc', 'xys')
-
-        df1 = Dolphins(next(fname), 'female', 'abcd', 'xyz')
-        df2 = Dolphins(next(fname), 'female', 'abcd', 'xyz')
-
-        # append to the list
-        maleList.append(dm1)
-        maleList.append(dm2)
-        femaleList.append(df1)
-        femaleList.append(df2)
-        totalPopulation.append(dm1)
-        totalPopulation.append(dm2)
-        totalPopulation.append(df1)
-        totalPopulation.append(df2)
+        print("Trial No.{}".format(str(j)))
+        start_year = 0
+        dolph_list = []
+        mothers = []
+        fathers = []
+        dolphinPop_75 = []
 
         populations = np.empty(150)
         years = np.empty(150)
-
         births = 0
-        for i in range(0, 150):  # for 150 years
 
-            # determine which dolphin breeds and add age by 1
-            for dol in totalPopulation:
-                # print('size : {}'.format(len(totalPopulation)))
-                dol.years_since_procreation += 1
-                if dol.age == 6:  # for age 6
-                    if dol.sex == 'male':
-                        maleBreedingList.append(dol)
-                    else:
-                        femaleBreedingList.append(dol)
-                    dol.years_since_procreation = 0
-                elif dol.age > 6:
-                    if dol.years_since_procreation == 5:  # procreation in 5 years
-                        if dol.sex == 'male':
-                            maleBreedingList.append(dol)
+        dol1 = Dolphins(next(mname), 'male', 'abc', 'xys')
+        dol2 = Dolphins(next(fname), 'female', 'ab', 'xyf')
+        dol3 = Dolphins(next(mname), 'male', 'a', 'f')
+        dol4 = Dolphins(next(fname), 'female', 'b', 'y')
+
+        dolph_list.append(dol1)
+        dolph_list.append(dol2)
+        dolph_list.append(dol3)
+        dolph_list.append(dol4)
+
+        for year in range(150):
+            years[year] = year
+            alive_list = alive_lst(year, dolph_list)
+
+            pop = len(alive_list)
+            populations[year] = pop
+
+            male_alive = []
+            female_alive = []
+
+            for dol in alive_list:
+                if dol.sex == 'male':
+                    male_alive.append(dol)
+                else:
+                    female_alive.append(dol)
+
+            update_all_procreation(year, male_alive)
+            update_all_procreation(year, female_alive)
+
+            p_mothers = []
+            p_fathers = []
+            for f in female_alive:
+                if f.years_since_procreation >= 5:
+                    p_mothers.append(f)
+            for m in male_alive:
+                if m.years_since_procreation >= 5:
+                    p_fathers.append(m)
+
+            mothers = []
+            fathers = []
+
+            for mom in p_mothers:
+                if len(p_fathers) != 0:
+                    dad = random.sample(p_fathers, 1)[0]
+                    if mom.request_procreation(dad):
+                        if random.random() > 0.5:  # deciding the gender
+                            sex = 'male'
+                            name = next(mname)
                         else:
-                            femaleBreedingList.append(dol)
-                        dol.years_since_procreation = 0
+                            sex = 'female'
+                            name = next(fname)
+                        new = Dolphins(name, sex, mom, dad)
+                        dolph_list.append(new)
+                        mom.children.append(new)
+                        dad.children.append(new)
+                        mothers.append(mom)
+                        fathers.append(dad)
+                        births += 1
+            breeding = len(p_fathers) + len(p_mothers)
+            update_all_procreation(year, alive_list)
 
-            #  get the length of male and female  breeding list
-            maleLen = len(maleBreedingList)
-            femaleLen = len(femaleBreedingList)
-            ml = maleLen
-            fl = femaleLen
-            # print(ml)
-            # print(fl)
-
-            if i == 0:
+            if year == 0:
                 print("##################################################")
                 print('entering year 0 with 4 dolphins, with 0 breeding.')
-            elif (i % 25) == 0 or i == 149:
+            if year % 25 == 0 and year != 100:
                 print("##################################################")
-                print('entering year {} with {} dolphins, with {} breeding.'.format(i, len(totalPopulation), ml + fl))
+                print("entering year ", year, " with ", pop, " dolphins, with ", breeding, "breeding")
+            if year == 100:
+                print("##################################################")
+                print("entering year ", year, " with ", pop, " dolphins, with ", breeding, "breeding")
+            if years == 75:
+                dolphinPop_75 = dolphinPop_75 + populations
+            if year == 101:
+                print("##################################################")
+                print("at year ", year - 1, " there are ", pop, " living dolphins.")
+                print("there have been", births, "births, in total.")
 
-            # determine the births
-            while maleLen != 0 or femaleLen != 0:
-                if maleLen == 0 or femaleLen == 0:
-                    break
+            if year == 149:
+                print("##################################################")
+                print("At year, ", year, " there are ", pop, " living dolphins")
+        mean[j - 1] = populations
 
-                m1 = random.choice(maleBreedingList)
-                f1 = random.choice(femaleBreedingList)
-
-                # procreate with each other
-                if m1.request_procreation(f1) and m1.age >= 6 and f1.age >= 6:  # check if male can procreate
-                    if random.random() > 0.5:  # deciding the gender
-                        sex = 'male'
-                        name = next(mname)
-                    else:
-                        sex = 'female'
-                        name = next(fname)
-                    new = Dolphins(name, sex, f1.name, m1.name)  # create new dolphin
-                    m1.years_since_procreation = 0
-                    f1.years_since_procreation = 0
-                    done.append(m1)
-                    done.append(f1)
-                    births += 1
-                    childrenList.append(new)
-                    # totalPopulation.append(new)
-                    maleBreedingList.remove(m1)
-                    femaleBreedingList.remove(f1)
-                    maleLen -= 1
-                    femaleLen -= 1
-
-                # else:
-                # continue
-
-            for dol in totalPopulation:
-
-                dol.age = dol.age + 1
-                val = dol.age_record()
-                if val:
-                    totalPopulation.remove(dol)
-            done = []
-            # maleBreedingList = []
-            # femaleBreedingList = []
-            totalPopulation = totalPopulation + childrenList
-            childrenList = []
-            if i == 100:
-                print('at year 100, there are {} living dolphins.'.format(len(totalPopulation)))
-                print('there have been {} births, in total.'.format(births))
-        mean[i - 1] = populations
-
+    # For calculating the mean
     mean_popopulation = np.mean(mean, axis=0)
+    # For calculating the standard deviation
     std_population = np.std(mean, axis=0)
     y1 = mean_popopulation + std_population
     y2 = mean_popopulation - std_population
@@ -174,6 +176,54 @@ def main():
     plt.title("Average population and standard deviation from 10 trials")
     plt.fill_between(years, y1, y2, facecolor='red')
     plt.savefig("population_growth.pdf")
+
+    # for plotting the genology tree
+    rand = random.randrange(0, 10)
+    dolphin_pop = dolphinPop_75
+
+    char = (random.sample(dolphin_pop, 1))[0]
+    mom_char = dolphin_pop[char].mother
+    dad_char = dolphin_pop[char].father
+
+    mom_half = []
+    dad_half = []
+    full_sib = []
+    for elem in dolphin_pop:
+        if dolphin_pop[elem].mother == mom_char and dolphin_pop[elem].father == dad_char and dolphin_pop[
+            elem] != char:
+            full_sib.append(elem)
+        elif dolphin_pop[elem].mother == mom_char and dolphin_pop[
+            elem] != char:
+            mom_half.append(elem)
+        elif dolphin_pop[elem].father == dad_char and dolphin_pop[elem] != char:
+            dad_half.append(elem)
+
+    # Creates graph for geneology.
+    # and plots the graph accordingly
+    gen = nx.Graph()
+    gen.add_node(mom_char, pos=(0, 3))
+    gen.add_node(dad_char, pos=(3, 3))
+    xheight = .5
+    xfloor = 0
+    for j in dolphin_pop:
+        if j in mom_half:
+            gen.add_node(j, pos=(xheight, 1))
+            gen.add_edge(j, mom_char)
+            xheight += 2
+        if j in dad_half:
+            gen.add_node(j, pos=(xheight, 1))
+            gen.add_edge(j, dad_char)
+            xheight += 2
+        if j in full_sib:
+            gen.add_node(j, pos=(xfloor, 2))
+            gen.add_edge(j, mom_char)
+            gen.add_edge(j, dad_char)
+            xfloor += 2
+    pos = nx.get_node_attributes(gen, 'pos')
+    nx.draw_networkx(gen, pos)
+    plt.title(char + "'s Family Web")
+    plt.axis('off')
+    plt.show()
 
 
 if __name__ == "__main__":
