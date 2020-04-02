@@ -48,6 +48,8 @@ def main():
     mean = np.empty([10, 150])
 
     for i in range(1, 11):
+        print("**************************************************")
+        print("Trial No.{}".format(str(i)))
         maleList = []
         femaleList = []
         maleBreedingList = []
