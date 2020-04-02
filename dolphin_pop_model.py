@@ -62,15 +62,17 @@ def main():
     Main method to perform part A ,B C
     :return:
     """
-    print("reading data..")
-    # readNames("boy", "boys.dat")
-    # readNames("girl", "girls.dat")
-    print("done..")
+    # Webscraping for names
+    print("reading names from web..")
+    readNames("boy", "boys.dat")
+    readNames("girl", "girls.dat")
+    print("done...")
     mean = np.empty([10, 150])
     mname = dl.yieldName('male')
     fname = dl.yieldName('female')
 
     for j in range(1, 11):
+        print("")
         print("**************************************************")
         print("Trial No.{}".format(str(j)))
         start_year = 0
@@ -203,8 +205,8 @@ def main():
     # Creates graph for geneology.
     # and plots the graph accordingly
     gen = nx.Graph()
-    gen.add_node(mom_char, pos=(0, 3))
-    gen.add_node(dad_char, pos=(3, 3))
+    gen.add_node(mom_char, pos=(0, 3))  # adding mother node
+    gen.add_node(dad_char, pos=(3, 3))  # adding father node
     xheight = .5
     xfloor = 0
     for j in dolphin_pop:
