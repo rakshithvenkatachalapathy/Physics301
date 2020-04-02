@@ -63,8 +63,8 @@ def main():
     :return:
     """
     print("reading data..")
-    # readNames("boy", "boys.dat")
-    # readNames("girl", "girls.dat")
+    readNames("boy", "boys.dat")
+    readNames("girl", "girls.dat")
     print("done..")
     mean = np.empty([10, 150])
     mname = dl.yieldName('male')
