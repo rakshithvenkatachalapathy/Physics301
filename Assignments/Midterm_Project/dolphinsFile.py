@@ -126,6 +126,8 @@ class Dolphins:
         self.father = father
         self.years_since_procreation = 0
         self.death = int(round(random.gauss(35, 5)))  # Mean = 35 and sigma = 5
+        self.children = []
+        self.status = True
 
     def __set__(self, instance, value):
         """
@@ -135,7 +137,7 @@ class Dolphins:
         :param value:
         :return:
         """
-        self.age = value
+        self.value = value
 
     def request_procreation(self, req):
         """
@@ -172,8 +174,25 @@ class Dolphins:
         # To check if the dolphin procreates in 5 years
         # IF this number is 5 then the dolphin procreates
         if self.years_since_procreation == 5:
+            # self.years_since_procreation = 0
             pflag = True
         # To determine the dolphin's death
-        if self.age > self.years_since_procreation:
+        if self.age > self.death:
             flag = True
-        return self.age, pflag, flag
+        return flag
+
+    def update_age(self, year):
+        """
+        Helper Method to update the age of the dolphin
+        :param year: the value of the year
+        :return:
+        """
+        self.age = year + 1;
+
+    def update_procreation_time(self, year):
+        """
+        Helper Method to update the procreation time of the dolphin
+        :param year: the value of the year
+        :return:
+        """
+        self.years_since_procreation = year
