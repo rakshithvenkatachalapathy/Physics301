@@ -108,7 +108,7 @@ class Dolphins:
     Dolphin class with the required attributes and the two methods
     """
 
-    def __init__(self, name, sex, mother, father):
+    def __init__(self, name, sex, mother, father, year):
         """
         init method to set the attributes
         :param name: dolphin name
@@ -128,6 +128,7 @@ class Dolphins:
         self.death = int(round(random.gauss(35, 5)))  # Mean = 35 and sigma = 5
         self.children = []
         self.status = True
+        self.year = year
 
     def __set__(self, instance, value):
         """
@@ -187,7 +188,7 @@ class Dolphins:
         :param year: the value of the year
         :return:
         """
-        self.age = year + 1;
+        self.age = year - self.year
 
     def update_procreation_time(self, year):
         """
