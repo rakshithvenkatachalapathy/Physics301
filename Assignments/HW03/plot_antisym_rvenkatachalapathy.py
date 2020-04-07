@@ -46,7 +46,7 @@ def parse_agrs():
     parser.add_argument('-x1_steps')
     parser.add_argument('-x2_steps')
     parser.add_argument('-n1')
-    parser.add_argument('-n2')
+    parser.add_argument('-n2') # add default = XXX is better
     parser.add_argument('-a')
     args = parser.parse_args()
     # Read the command line input using argparse

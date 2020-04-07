@@ -79,3 +79,16 @@ def primes(start, end):
 if __name__ == "__main__":
     arg = parse_agrs()
     primes(arg[0], arg[1])
+
+'''
+    try this one to save one for loop:
+        def find_prime(minint, maxint):
+        import numpy as np
+        ints = np.arange(1, maxint+1)
+        primenum = []
+        for i in range(minint, maxint+1):
+            rmdr = i%ints
+            if np.sum(rmdr == 0) == 2:
+                primenum.append(i)
+        return primenum
+    '''
