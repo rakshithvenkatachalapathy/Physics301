@@ -64,6 +64,10 @@ class Tone:
         return None
 
     def comb_tones(self):
+        """
+
+        :return: the signal list
+        """
         normalize = 0
         OT_weights = self.overtones.copy()
         for i in OT_weights:
