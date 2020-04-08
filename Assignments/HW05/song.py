@@ -1,3 +1,7 @@
+"""
+This module is for home work 5
+It has a class Tone which has different functions as described in the document
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 from pip._vendor.distlib.compat import raw_input
@@ -43,7 +47,7 @@ class Tone:
         amp = 2 ** 10  # amplitude set ot 2^10
         self.orig_signal = np.int16(amp * np.sin(np.pi * 2 * self.f * time_pts))
         if play_sound:
-            self.playsound(outside_signal=self.orig_signal)
+            self.play_sound(outside_signal=self.orig_signal)
         return self.orig_signal
 
     def get_overtone(self, multi, play_sound=None):
@@ -60,12 +64,12 @@ class Tone:
         self.overtones[ot_f] = ot_signal
         self.OT_num += 1
         if play_sound:
-            self.playsound(outside_signal=ot_signal)
+            self.play_sound(outside_signal=ot_signal)
         return None
 
     def comb_tones(self):
         """
-        Generates an overtone that has a frequency that is multi×f1
+        Combines the tone at f1 and all overtones present
         :return: the signal list
         """
         normalize = 0
@@ -80,7 +84,14 @@ class Tone:
             self.signal += OT_weights[key] * self.overtones[key]
         return self.signal
 
-    def playsound(self, outside_signal=None, sample_rate=44100, vol=0.05):
+    def play_sound(self, outside_signal=None, sample_rate=44100, vol=0.05):
+        """
+        Plays the combined tone
+        :param outside_signal: outside signal
+        :param sample_rate: sample rate
+        :param vol: volume
+        :return:
+        """
         if outside_signal is None:
             write('tmp.wav', sample_rate, np.int16(vol * self.signal))
             os.system("afplay tmp.wav")
@@ -91,6 +102,13 @@ class Tone:
             os.system("rm tmp.wav")
 
     def plot_fourier(self, sample_rate=44100, freq_lim=2000., amp_lim=1e7):
+        """
+        Plots the real and imaginary parts of the DFT of the combined tone
+        :param sample_rate: sample rate
+        :param freq_lim: frequency limit
+        :param amp_lim: amplitude limit
+        :return: NA
+        """
         ft = np.fft.fft(self.signal)
         freq = np.fft.fftfreq(self.signal.shape[0], d=1. / sample_rate)
 
@@ -105,6 +123,11 @@ class Tone:
         plt.show()
 
     def plot_sound(self, t_lim=0.02):
+        """
+        Plots the combined tone against tim
+        :param t_lim: time limit
+        :return: NA
+        """
         time = np.linspace(0, self.dur, int(self.dur * self.sr))
         plt.figure()
         plt.title("Sound Wave vs. Time")
@@ -131,11 +154,11 @@ f1_rich = fund1.comb_tones()
 print("For A tone, the frequency, sampling_rate, duration, and number of overtones are:",
       fund1.f, ',', fund1.sr, ',', fund1.dur, ',', fund1.OT_num)
 
-fund1.playsound()
+fund1.play_sound()
 fund1.plot_sound()
 fund1.plot_fourier(freq_lim=2000.)
 
 melody = np.concatenate(np.array([B, A, G, A, B, B, B, B, A, A, A, A]))
 mel = Tone()
-mel.playsound(outside_signal=melody)
+mel.play_sound(outside_signal=melody)
 print("Done playing the melody")
