@@ -65,7 +65,7 @@ class Tone:
 
     def comb_tones(self):
         """
-
+        Generates an overtone that has a frequency that is multi×f1
         :return: the signal list
         """
         normalize = 0
