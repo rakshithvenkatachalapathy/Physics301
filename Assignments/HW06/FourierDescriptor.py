@@ -70,3 +70,35 @@ def filt_FD(Z, n_keep, no_zeroth=True):
     filt = filt1 + filt2
     Z *= filt
     return Z
+
+
+def get_FD_abs(x, y, order=10, norm=True, no_zeroth=True):
+    x_reco = []
+    y_reco = []
+    fd_magn = []
+    for i in range(len(x)):
+        Z = FD(x[i], y[i])
+        Z_filt = filt_FD(Z, order, no_zeroth)
+        if norm:
+            Z_filt = size_norm(Z_filt)
+        x_rec, y_rec = recover_shape(Z_filt)
+        tmp_mag = []
+        for i in Z_filt:
+            if i != 0:
+                tmp_mag.append(i)
+        fd_mag = np.abs(tmp_mag)
+        x_reco.append(x_rec)
+        y_reco.append(y_rec)
+        fd_magn.append(fd_mag)
+    return fd_magn, x_reco, y_reco
+
+
+def recover_shape(Z):
+    z_rec = np.fft.ifft(Z)
+    x_rec = z_rec.real
+    y_rec = z_rec.imag
+    return x_rec, y_rec
+
+
+def size_norm(Z):
+    return Z / np.sqrt(np.abs(Z[1]) * np.abs(Z[-1]))
