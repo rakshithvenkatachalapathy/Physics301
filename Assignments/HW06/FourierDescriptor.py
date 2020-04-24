@@ -4,6 +4,15 @@ import numpy as np
 
 
 def extract_shape(im_file, blowup=1., plot_img=False, plot_contour=False, plot_contour_pts=False):
+    """
+    This function is used to extract the shapes of the letters or number passed to it as images
+    :param im_file: image file
+    :param blowup: blowup factor
+    :param plot_img: boolean to plot image
+    :param plot_contour: boolean to plot contour
+    :param plot_contour_pts:  boolean to plot contour points
+    :return: x and y contour array's
+    """
     im = mpimg.imread(im_file)
 
     if len(im.shape) > 2:
@@ -17,17 +26,13 @@ def extract_shape(im_file, blowup=1., plot_img=False, plot_contour=False, plot_c
     x = np.arange(im.shape[1]) * blowup
     y = np.arange(im.shape[0]) * blowup
 
+    # Have to flip x to get the orientation right, again just a peculiar convention we have to work around
     y = y[::-1]
     X, Y = np.meshgrid(x, y)
 
     plt.figure()
     plt.title('Contours')
-    #
-    # CS = plt.contour(X, Y, im, 1)
-    # if not plot_contour:
-    #     plt.close()
-    # cs_paths = CS.collections[0].get_paths()
-
+    # tranpose operation
     CS = plt.contour(X, Y, im, 1)
     if not plot_contour:
         plt.close()
@@ -50,11 +55,20 @@ def extract_shape(im_file, blowup=1., plot_img=False, plot_contour=False, plot_c
 
 
 def FD(x, y, plot_FD=False, y_lim=None):
+    """
+    Function to get the FD's
+    :param x:
+    :param y:
+    :param plot_FD:
+    :param y_lim:
+    :return: Z , k and K_low
+    """
+    # Total number of points
     N = len(x)
     n = np.arange(N)
-    # z = x + y * 1j
+
     z = x + 1j * y
-    # z *= np.exp(1j * np.pi / 2.) 
+
     z *= np.exp(1j * np.pi / 2)  # To plot the image horizontally
 
     Z = np.fft.fft(z)
@@ -72,10 +86,16 @@ def FD(x, y, plot_FD=False, y_lim=None):
         if y_lim is not None:
             plt.ylim([-y_lim, y_lim])
     return Z, k, k_lo
-    # Z, k , k_low
 
 
 def filt_FD(Z, n_keep, no_zeroth=True):
+    """
+    Function to filter the FD's
+    :param Z:
+    :param n_keep:
+    :param no_zeroth:
+    :return: Z and the filtered array
+    """
     N = len(Z)
     n = np.arange(len(Z))
     zeroth = 1
@@ -89,6 +109,15 @@ def filt_FD(Z, n_keep, no_zeroth=True):
 
 
 def get_FD_abs(x, y, order=10, norm=True, no_zeroth=True):
+    """
+    Function to get the avsoulte FD's
+    :param x:
+    :param y:
+    :param order:
+    :param norm:
+    :param no_zeroth:
+    :return:  magnitude , kept k values, x,y records
+    """
     x_reco = []
     y_reco = []
     fd_magn = []
@@ -112,6 +141,11 @@ def get_FD_abs(x, y, order=10, norm=True, no_zeroth=True):
 
 
 def recover_shape(Z):
+    """
+    Function to recover the shape
+    :param Z:
+    :return: the x,y recovered values
+    """
     z_rec = np.fft.ifft(Z)
     x_rec = z_rec.real
     y_rec = z_rec.imag
@@ -119,6 +153,10 @@ def recover_shape(Z):
 
 
 def size_norm(Z):
+    """
+    Function to normalize the size
+    :return:
+    """
     return Z / np.sqrt(np.abs(Z[1]) * np.abs(Z[-1]))
 
 
@@ -166,6 +204,3 @@ if __name__ == "__main__":
         plt.plot(k_kept6, fd6_mag[i], 'r^')
     plt.savefig('FourierDescriptor_numbers126.pdf')
     plt.show()
-    # FT
-    # frequencies
-    # index
