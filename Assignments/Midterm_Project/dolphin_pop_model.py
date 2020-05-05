@@ -233,3 +233,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+'''
+should save the output as a pdf file           -5
+the population I get at year 150 by running your program is about 50
+which is too small                             -10
+send me email if I have misunderstand your code and I will give this point back to you
+'''

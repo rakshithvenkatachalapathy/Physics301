@@ -151,6 +151,9 @@ fund1.get_overtone(3)
 fund1.get_overtone(4)
 f1_rich = fund1.comb_tones()
 
+
+# B D G should also have overtone, so build a function to do it                      -5
+
 print("For A tone, the frequency, sampling_rate, duration, and number of overtones are:",
       fund1.f, ',', fund1.sr, ',', fund1.dur, ',', fund1.OT_num)
 

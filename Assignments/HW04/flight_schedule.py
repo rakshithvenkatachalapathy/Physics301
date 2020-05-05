@@ -37,3 +37,4 @@ if __name__ == '__main__':
         # Print the details by formatting it
         print(f'{flightName:13}\t{dest:17}\t{toPrint[3]:2}\t{toPrint[4]:4}')
 
+# also print flights sorted by time                 -5
