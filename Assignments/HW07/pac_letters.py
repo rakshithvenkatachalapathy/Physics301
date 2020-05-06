@@ -38,3 +38,28 @@ def make_let_im(let_file, dim=16, ylo=70, yhi=220, xlo=10, xhi=200, edge_pix=150
         plt.show()
 
     return letter_new, letter_flat
+
+def alphabet_pca(X, n_comp=5):
+    pca = PCA(n_comp)
+    Xproj = pca.fit_transform(X)
+    pca_comps = pca.components_
+
+    return pca, Xproj, pca_comps
+
+
+def show_pca_im(Xproj, pca_comps, dim=16, let_idx=0):
+    n_comp = pca_comps.shape[0]
+    f, axes = plt.subplots(1, n_comp, figsize=(10, 2), subplot_kw=dict(xticks=[], yticks=[]))
+    for i in range(n_comp):
+        axes[i].imshow(pca_comps[i].reshape((dim, dim)), cmap='binary')
+
+    dig_im = np.zeros((dim, dim))
+    coeffs = Xproj[let_idx]
+    for i in range(n_comp):
+        dig_im += coeffs[i] * pca_comps[i].reshape((dim, dim))
+
+    fig, ax = plt.subplots(1, 1, figsize=(2, 2))
+    ax.imshow(dig_im, cmap='binary')
+    ax.grid(False)
+    ax.axis('off')
+    plt.show()
