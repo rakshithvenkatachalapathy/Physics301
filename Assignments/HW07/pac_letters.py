@@ -63,3 +63,27 @@ def show_pca_im(Xproj, pca_comps, dim=16, let_idx=0):
     ax.grid(False)
     ax.axis('off')
     plt.show()
+
+
+if __name__ == "__main__":
+    import doctest
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-let_idx', type=int)
+    parser.add_argument('-n_comp', type=int)
+    args = parser.parse_args()
+
+    let_idx = args.let_idx
+    n_comp = args.n_comp
+
+    i = 0
+    X = np.zeros((26, 256))
+    while i < 26:
+        filename = 'letter' + chr(65 + i) + '.png'
+        letter, letter_flat = make_let_im(filename)
+        X[i,] = letter_flat
+        i += 1
+
+    pca, Xproj, pca_comps = alphabet_pca(X, n_comp=n_comp)
+    show_pca_im(Xproj, pca_comps, let_idx=let_idx)
