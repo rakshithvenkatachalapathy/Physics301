@@ -170,7 +170,7 @@ if __name__ == "__main__":
     parser.set_defaults(no_zeroth=True, norm=True)
     args = parser.parse_args()
 
-    order = args.order
+    order = 10
     norm = args.norm
     no_zeroth = args.no_zeroth
 

@@ -121,3 +121,7 @@ if __name__ == "__main__":
 
     pca, Xproj, pca_comps = alphabet_pca(X, n_comp=n_comp)
     show_pca_im(Xproj, pca_comps, let_idx=let_idx)
+
+    '''
+    name this file with 'python pca_letters_[your Canvas login ID].py'          -5
+    '''
